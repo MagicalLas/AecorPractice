@@ -1,3 +1,5 @@
 sealed trait BookingCommandRejection
 
 case object BookingErrorDefault extends BookingCommandRejection
+
+case object BookingAlreadyExists extends BookingCommandRejection
