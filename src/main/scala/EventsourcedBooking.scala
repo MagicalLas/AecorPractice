@@ -2,5 +2,7 @@ class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingS
 
   import F._
 
-  def place(client: ClientId): F[Unit] = ???
+  def place(client: ClientId): F[Unit] = read.flatMap{
+    case _ => reject(BookingErrorDefault)
+  }
 }
