@@ -5,7 +5,8 @@ import scala.collection.immutable
 case class BookingState(clietId: ClientId,
                         tickets: NonEmptyList[Ticket],
                         status: BookingStatus,
-                        seats: NonEmptyList[Seat])
+                        seats: NonEmptyList[Seat]) extends EnumEntry
+
 
 case class ClientId(value: String) extends AnyVal
 
@@ -21,7 +22,7 @@ case class SeatNumber(num: Int) extends AnyVal
 
 sealed trait BookingStatus extends EnumEntry
 
-object BookingStatus extends Enum[BookingState] with CirceEnum[BookingState] {
+object BookingStatus extends Enum[BookingStatus] with CirceEnum[BookingStatus] {
 
   case object AwaitingConfirmation extends BookingStatus
 
@@ -33,5 +34,5 @@ object BookingStatus extends Enum[BookingState] with CirceEnum[BookingState] {
 
   case object Settled extends BookingStatus
 
-  def values: immutable.IndexedSeq[BookingState] = findValues
+  def values: immutable.IndexedSeq[BookingStatus] = findValues
 }
