@@ -1,7 +1,11 @@
 import BookingStatus._
+import BookingState._
 import aecor.MonadActionReject
+import cats.Monoid
 import cats.data.NonEmptyList
-import cats.implicits._
+import cats.syntax.all._
+
+
 
 class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingState], BookingEvent, BookingCommandRejection]) extends Booking[F] {
 
