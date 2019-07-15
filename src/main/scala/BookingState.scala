@@ -5,7 +5,10 @@ import scala.collection.immutable
 case class BookingState(clietId: ClientId,
                         tickets: NonEmptyList[Ticket],
                         status: BookingStatus,
-                        seats: NonEmptyList[Seat])
+                        seats: NonEmptyList[Seat]) {
+  
+  def handleEvent(): Unit = ???
+}
 
 
 case class ClientId(value: String) extends AnyVal
