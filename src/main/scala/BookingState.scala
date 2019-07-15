@@ -5,7 +5,7 @@ import scala.collection.immutable
 case class BookingState(clietId: ClientId,
                         tickets: NonEmptyList[Ticket],
                         status: BookingStatus,
-                        seats: NonEmptyList[Seat]) extends EnumEntry
+                        seats: NonEmptyList[Seat])
 
 
 case class ClientId(value: String) extends AnyVal
