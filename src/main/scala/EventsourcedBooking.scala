@@ -10,6 +10,8 @@ import cats.syntax.all._
 class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingState], BookingEvent, BookingCommandRejection]) extends Booking[F] {
 
   import F._
+  val ignore: F[Unit] = F.unit
+
   implicit val tempMoneyMonoid: Monoid[Money] = new Monoid[Money] {
     override def empty: Money = ???
     override def combine(x: Money, y: Money): Money = ???
