@@ -1,13 +1,15 @@
+import aecor.data.Folded
 import cats.data.NonEmptyList
 import enumeratum._
+
 import scala.collection.immutable
 
 case class BookingState(clietId: ClientId,
                         tickets: NonEmptyList[Ticket],
                         status: BookingStatus,
                         seats: NonEmptyList[Seat]) {
-  
-  def handleEvent(): Unit = ???
+
+  def handleEvent(e: BookingEvent): Folded[BookingState] = ???
 }
 
 
