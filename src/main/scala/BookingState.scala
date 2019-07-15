@@ -1,4 +1,5 @@
 import aecor.data.Folded
+import aecor.data.Folded.syntax._
 import cats.data.NonEmptyList
 import enumeratum._
 
@@ -9,7 +10,9 @@ case class BookingState(clietId: ClientId,
                         status: BookingStatus,
                         seats: NonEmptyList[Seat]) {
 
-  def handleEvent(e: BookingEvent): Folded[BookingState] = ???
+  def handleEvent(e: BookingEvent): Folded[BookingState] = e match {
+    case  _: BookingPlaced => impossible
+  }
 }
 
 
