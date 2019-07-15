@@ -6,12 +6,16 @@ import enumeratum._
 import scala.collection.immutable
 
 case class BookingState(clietId: ClientId,
-                        tickets: NonEmptyList[Ticket],
+                        tickets: Option[NonEmptyList[Ticket]],
                         status: BookingStatus,
                         seats: NonEmptyList[Seat]) {
 
   def handleEvent(e: BookingEvent): Folded[BookingState] = e match {
     case  _: BookingPlaced => impossible
+    case e: BookingConfirmed => copy(
+      tickets = Some(e.tickets),
+      status = BookingStatus.Confirmed
+    ).next
   }
 }
 
