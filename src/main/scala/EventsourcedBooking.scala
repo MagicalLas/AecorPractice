@@ -14,12 +14,15 @@ class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingS
   }
 
   def confirm(tickets: NonEmptyList[Ticket]): F[Unit] = state.flatMap {
-    case AwaitingConfirmation => append(BookingConfirmed(tickets)) >> whenA(tickets.foldMap(_.price).amount <= 0)(append(BookingSettled))
-    case Denied              => reject(BookingErrorDefault)
-    case Canceled            => reject(BookingErrorDefault)
+    case AwaitingConfirmation => append(BookingConfirmed(tickets)) >>
+      whenA(tickets.foldMap(_.price).amount <= 0)
+      (append(BookingSettled))
+    case Denied => reject(BookingErrorDefault)
+    case Canceled => reject(BookingErrorDefault)
   }
+
   def state: F[BookingStatus] = read.flatMap {
     case Some(s) => pure(s.status)
-    case _       => reject(BookingErrorDefault)
+    case _ => reject(BookingErrorDefault)
   }
 }
