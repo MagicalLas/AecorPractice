@@ -43,4 +43,5 @@ class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingS
     case _ => reject(BookingErrorDefault)
   }
 
+  def place(client: ClientId): F[Unit] = ???
 }
