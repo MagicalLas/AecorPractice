@@ -11,7 +11,7 @@ case class BookingState(clietId: ClientId,
                         status: BookingStatus) {
 
   def handleEvent(e: BookingEvent): Folded[BookingState] = e match {
-    case  _: BookingPlaced => impossible
+    case _: BookingPlaced => impossible
     case e: BookingConfirmed => copy(
       tickets = Some(e.tickets),
       status = BookingStatus.Confirmed
@@ -31,6 +31,17 @@ case class Seat(row: Row, number: SeatNumber)
 case class Row(num: Int) extends AnyVal
 
 case class SeatNumber(num: Int) extends AnyVal
+
+
+object BookingState {
+
+  def init(e: BookingEvent): Folded[BookingState] = e match {
+    case e: BookingPlaced =>
+      BookingState(e.clientId, e.seats, None, BookingStatus.AwaitingConfirmation).next
+    case _ => impossible
+  }
+}
+
 
 sealed trait BookingStatus extends EnumEntry
 
