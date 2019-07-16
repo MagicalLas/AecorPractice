@@ -1,3 +1,5 @@
+package boking
+
 import cats.data.NonEmptyList
 
 sealed trait BookingEvent extends Product with Serializable

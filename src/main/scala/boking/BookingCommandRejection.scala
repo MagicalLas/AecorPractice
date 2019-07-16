@@ -1,3 +1,5 @@
+package boking
+
 sealed trait BookingCommandRejection
 
 case object BookingErrorDefault extends BookingCommandRejection

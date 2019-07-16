@@ -1,3 +1,5 @@
+package boking
+
 import aecor.data.Folded
 import aecor.data.Folded.syntax._
 import cats.data.NonEmptyList
