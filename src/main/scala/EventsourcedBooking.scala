@@ -18,10 +18,16 @@ class EventsourcedBooking[F[_]](implicit F: MonadActionReject[F, Option[BookingS
     override def combine(x: Money, y: Money): Money = ???
   }
 
+  implicit val tempSeatsOrder: cats.Order[Seat] = new cats.Order[Seat] {
+    override def compare(x: Seat, y: Seat): Int = ???
+  }
+
   def place(client: ClientId, seats: NonEmptyList[Seat]): F[Unit] =
     read.flatMap {
       case Some(_) => reject(BookingAlreadyExists)
-      case None => append(BookingPlaced(client, seats))
+      case None => if (seats.distinct =!= seats) reject(BookingErrorDefault)
+      else if (seats.size > 10) reject(BookingErrorDefault)
+      else append(BookingPlaced(client, seats))
       case _ => reject(BookingErrorDefault)
     }
 
