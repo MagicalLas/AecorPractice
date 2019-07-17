@@ -1,11 +1,25 @@
+package boking
+
+import aecor.data.Folded
+import aecor.data.Folded.syntax._
 import cats.data.NonEmptyList
 import enumeratum._
+
 import scala.collection.immutable
 
 case class BookingState(clietId: ClientId,
-                        tickets: NonEmptyList[Ticket],
-                        status: BookingStatus,
-                        seats: NonEmptyList[Seat]) extends EnumEntry
+                        seats: NonEmptyList[Seat],
+                        tickets: Option[NonEmptyList[Ticket]],
+                        status: BookingStatus) {
+
+  def handleEvent(e: BookingEvent): Folded[BookingState] = e match {
+    case _: BookingPlaced => impossible
+    case e: BookingConfirmed => copy(
+      tickets = Some(e.tickets),
+      status = BookingStatus.Confirmed
+    ).next
+  }
+}
 
 
 case class ClientId(value: String) extends AnyVal
@@ -19,6 +33,17 @@ case class Seat(row: Row, number: SeatNumber)
 case class Row(num: Int) extends AnyVal
 
 case class SeatNumber(num: Int) extends AnyVal
+
+
+object BookingState {
+
+  def init(e: BookingEvent): Folded[BookingState] = e match {
+    case e: BookingPlaced =>
+      BookingState(e.clientId, e.seats, None, BookingStatus.AwaitingConfirmation).next
+    case _ => impossible
+  }
+}
+
 
 sealed trait BookingStatus extends EnumEntry
 
